@@ -1,0 +1,72 @@
+﻿@model RequestManager.Models.RequestModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script>
+    function FillUser() {
+        var DepartmentValue = $('#DepartmentName').val();
+        $.ajax({
+            url: '/Home/FillUser',
+            type: "GET",
+            dataType: "JSON",
+            data: { DepartmentValue: DepartmentValue },
+            success: function (Users) {
+                $("#RequestBy").html("");
+                $.each(Users, function (i, User) {
+                    $("#RequestBy").append(
+                        $('<option></option>').val(User.UserValue).html(User.UserText));
+                });
+            }
+        });
+    }
+</script>
+
+@using (Html.BeginForm("RequestPost", "Home", FormMethod.Post, new { @class = "form-signin" }))
+{
+
+    @Html.AntiForgeryToken()
+
+
+
+    //Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "sr-only" })
+    @Html.TextBoxFor(m => m.ProjectName, "", new { @class = "form-control", @required = "required", placeholder = @RequestManager.Resources.Resource.ProjectName, maxlength = 90 })
+    @Html.ValidationMessageFor(m => m.ProjectName, "", new { @class = "badge badge-danger" })
+
+
+    //Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "sr-only" })
+    @Html.DropDownListFor(m => m.DepartmentName, new SelectList(ViewBag.database, "DepartmentValue", "DepartmentText"), "Select Department", new { @class = "form-control", @required = "required" , @onchange = "FillUser()" })
+
+    @Html.ValidationMessageFor(m => m.DepartmentName, "", new { @class = "badge badge-danger" })
+
+
+    @Html.DropDownListFor(m => m.RequestBy,new SelectList(Enumerable.Empty<SelectListItem>(), "UserValue", "UserText"), "Select Requester", new { @class = "form-control", @required = "required" })
+    @Html.ValidationMessageFor(m => m.RequestBy, "", new { @class = "text-danger" })
+
+
+    @Html.TextBoxFor(m => m.DescriptionOfProblem, "", new { @class = "form-control", @required = "required", placeholder = @RequestManager.Resources.Resource.DescriptionOfProblem, maxlength = 280 })
+    @Html.ValidationMessageFor(m => m.DescriptionOfProblem, "", new { @class = "badge badge-danger" })
+
+
+    <div class="col-md-12 text-center ">
+        @Html.ValidationSummary(false)
+
+        @if (Session["error"] != null)
+        {
+            <label>@RequestManager.Resources.Resource.ErrorMessage:</label> @Session["error"]
+
+        }
+
+
+    </div>
+
+
+    <input type="submit" value="@RequestManager.Resources.Resource.Submit" class="btn btn-lg btn-primary btn-block" />
+
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+
+}

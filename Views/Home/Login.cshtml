@@ -1,0 +1,76 @@
+﻿@model RequestManager.Models.UserModel
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>@RequestManager.Resources.Resource.SignIn</title>
+    @Styles.Render("~/Content/css")
+
+    <link href="@Url.Content("~/Content/SignIn.css")" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="text-center">
+
+
+
+
+
+
+    @using (Html.BeginForm("Loginpost", "Home", FormMethod.Post, new { @class = "form-signin" }))
+    {
+
+        
+            foreach (var i in RequestManager.LanguageMang.AvailableLanguages)
+            {
+                @Html.ActionLink(i.LanguageFullName, "ChangeLanguage", "Home", new { lang = i.LanguageCultureName }, null) <text> </text>
+            }
+       
+
+        <h1 class="h3 mb-3 font-weight-normal">@RequestManager.Resources.Resource.SignIn</h1>
+        //Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "sr-only" })
+        @Html.TextBoxFor(m => m.Name, "", new { @class = "form-control", @required = "required", placeholder = @RequestManager.Resources.Resource.Name,maxlength = 40 })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "badge badge-danger" })
+
+
+        //Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "sr-only" })
+
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @required = "required", placeholder = @RequestManager.Resources.Resource.Password, maxlength = 40 })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+
+
+
+        <div class="col-md-12 text-center ">
+            @Html.ValidationSummary(false)
+
+            @if (Session["error"] != null)
+            {
+                <label>@RequestManager.Resources.Resource.ErrorMessage:</label> @Session["error"]
+
+            }
+
+
+        </div>
+
+
+        <input type="submit" value="@RequestManager.Resources.Resource.SignIn" class="btn btn-lg btn-primary btn-block" />
+
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+
+    }
+
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+</body>
+</html>

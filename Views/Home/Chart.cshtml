@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Chart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chart</h2>
+<script>
+    window.onload = function () {
+
+        var coloR = [];
+        var data=[@Html.Raw(ViewBag.ObjectName)];
+        var dynamicColors = function () {
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        };
+        for (var i in data) {
+            coloR.push(dynamicColors());
+        }
+
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [@Html.Raw(ViewBag.ObjectName)],
+            //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: 'Tickets of Projects',
+                //data: [12, 19, 3, 5, 2, 3],
+                data: [@ViewBag.Data],
+                backgroundColor: coloR,
+                borderColor: 'rgba(200, 200, 200, 0.75)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    }
+</script>
+
+<div style="text-align: center">
+    <canvas id="myChart"></canvas>
+</div>
+<div style="text-align: center">
+    Disclaimer:- This data is for demo it is
+    not real data it wont relate to any company
+</div>
