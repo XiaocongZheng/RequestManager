@@ -8,3 +8,6 @@ The index page is designed for posting data to create new requests in the databa
 And in the Viewall page, I use datatable to display all the requests, and use the datatable's plugin could make users easily search the keyword for any column in the table.
 
 And in the Chart page, I use Chartjs to show the tickets' number of each project.
+
+
+Future Improvement: use md5 and salt to encript the password, create more functions such as, users could manage the status of the request(pending,solved,in progress).
